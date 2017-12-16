@@ -1,9 +1,10 @@
 buildscript {
     ext {
-        springBootVersion = '1.4.3.RELEASE'
+        springBootVersion = '2.0.0.M7'
     }
     repositories {
         mavenCentral()
+		maven { url 'https://repo.spring.io/libs-snapshot' }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -13,28 +14,30 @@ buildscript {
 
 description = "Use Spring Boot with Tapestry"
 group = "info.code8"
-version = "0.1.0-SNAPSHOT"
+version = "0.2.0-SNAPSHOT"
 ext {
     versions =  [
-            spring:     '4.3.5.RELEASE',
-            boot:       '1.4.3.RELEASE',
-            tapestry:   '5.4.1',
+            spring:     '5.0.2.RELEASE',
+            boot:       '2.0.0.M7',
+            tapestry:   '5.4.3',
             junit:      '4.12'
     ]
 }
 
 apply plugin: 'java'
-apply plugin: 'spring-boot'
+apply plugin: 'maven'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 jar {
     baseName = 'tapestry-boot'
     manifest { attributes 'Tapestry-Module-Classes': 'info.code8.tapestry.AssetSourceModule' }
 }
 
-bootRepackage {
+//bootRepackage {
     // workaround for 'Unable to find main class'
-    mainClass = '...'
-}
+//    mainClass = '...'
+//}
 
 task sourceJar(type: Jar) {
   dependsOn classes
@@ -51,11 +54,12 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+	maven { url 'https://repo.spring.io/libs-snapshot' }
 }
 
 dependencies {
     compile "org.springframework.boot:spring-boot-autoconfigure:${versions.boot}"
-    compile "org.springframework:spring-web:${versions.spring}"
+    compile "org.springframework:spring-web:5.0.2.RELEASE"
     compile "org.apache.tapestry:tapestry-core:${versions.tapestry}"
     compile "javax.servlet:javax.servlet-api:3.1.0"
 
